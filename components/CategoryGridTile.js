@@ -1,6 +1,12 @@
+// import { useNavigation } from "@react-navigation/native";
 import { Pressable, View, Text, StyleSheet, Platform } from "react-native";
 
 function CategoryGridTile(props) {
+  /* this hook provides the navigation object 
+  regardless of compo/screen regiestered as screen in 
+   <screen.navigator>*/
+  // const navigation=useNavigation()
+
   return (
     <View style={styles.gridItem}>
       <Pressable
@@ -9,6 +15,7 @@ function CategoryGridTile(props) {
           styles.button,
           pressed ? styles.buttonPressed : null,
         ]}
+        onPress={props.onPress}
       >
         <View style={[styles.innerContainer, { backgroundColor: props.color }]}>
           <Text style={styles.title}>{props.title}</Text>
@@ -41,6 +48,7 @@ const styles = StyleSheet.create({
   innerContainer: {
     flex: 1,
     padding: 16,
+    borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",
   },
