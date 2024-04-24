@@ -1,26 +1,48 @@
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { MEALS } from "../data/dummy-data";
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import MealDetails from "../components/MealDetails";
 import SubTitle from "../components/MealDetail/Subtitle";
 import List from "../components/MealDetail/List";
 import IconButton from "../components/IconButton";
+import { addFavorites, removeFavorites } from "../store/redux/favoriteSlice";
+// import { FavoritesContext } from "../store/context/favourites-context";
 
 function MealDetailsScreen({ route, navigation }) {
-  const [iconColor, seticonColor] = useState("black");
   const mealId = route.params.mealId;
   const selectedMeal = MEALS.find((meal) => meal.id === mealId);
+
+  // const favoriteMealsCtx = useContext(FavoritesContext);
+  //const mealsIsFavorite = favoriteMealsCtx.ids.includes(mealId);
+  const favoriteMealds = useSelector((state) => state.favoriteMeals.ids);
+  const dispatch = useDispatch();
+  const isMealFavorite = favoriteMealds.includes(mealId);
+
   useEffect(() => {
     navigation.setOptions({ title: selectedMeal.title });
     navigation.setOptions({
       headerRight: () => {
-        return <IconButton onPress={handleHeaderPress} color={iconColor} />;
+        return (
+          <IconButton
+            onPress={handleHeaderPress}
+            color="white"
+            name={isMealFavorite ? "star" : "star-outline"}
+          />
+        );
       },
     });
   }, [mealId, navigation, handleHeaderPress]);
 
   function handleHeaderPress() {
-    seticonColor("white");
+    if (isMealFavorite) {
+      // favoriteMealsCtx.removeFavorite(mealId)
+      dispatch(removeFavorites({ id: mealId }));
+    } else {
+      //favoriteMealsCtx.addFavorite(mealId)
+      dispatch(addFavorites({ id: mealId }));
+    }
   }
 
   return (

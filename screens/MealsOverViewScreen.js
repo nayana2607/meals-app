@@ -1,7 +1,7 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { MEALS, CATEGORIES } from "../data/dummy-data";
-import MealItems from "../components/MealItems";
 import { useEffect } from "react";
+import MealsList from "../components/MealsList/MealsList";
 //import { useRoute } from "@react-navigation/native";
 
 //route is recieved as a parameter alongwith navigation when the screen is register as component in <stack.screen>
@@ -29,24 +29,7 @@ regardless of compo/screen
     return meal.categoryIds.includes(categoryId);
   });
 
-  function renderMeals(itemData) {
-    return <MealItems mealInfo={itemData.item} />;
-  }
-
-  return (
-    <View style={styles.container}>
-      <FlatList
-        data={displayedMeals}
-        renderItem={renderMeals}
-        keyExtractor={(item) => item.id}
-      />
-    </View>
-  );
+  return <MealsList displayedMeals={displayedMeals} />;
 }
 export default MealsOverViewScreen;
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-});
+const styles = StyleSheet.create({});
